@@ -45,4 +45,12 @@ schema = [
         , PRIMARY KEY (discover_id, build, commit)
         )
     |]
+  , Migration "create-log" [sql|
+      CREATE TABLE log (
+          build_id BIGINT NOT NULL
+        , log_id SERIAL PRIMARY KEY
+        , logged_at TIMESTAMP WITH TIME_ZONE
+        , log_payload TEXT
+        )
+    |]
   ]

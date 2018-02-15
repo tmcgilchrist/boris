@@ -62,7 +62,6 @@ fetch e i = newEitherT $ do
     <*> (forM (res ^? D.girsItem . ix kEndTime . D.avS . _Just) $ fromMaybeM (Left $ InvalidEndTime i) . blat)
     <*> (forM (res ^? D.girsItem . ix kHeartbeatTime . D.avS . _Just) $ fromMaybeM (Left $ InvalidHeartbeatTime i) . blat)
     <*> (Right . fmap (bool BuildKo BuildOk) $ res ^? D.girsItem . ix (renderKey kBuildResult) . D.avBOOL . _Just)
-    <*> (Right $ LogData <$> res ^? D.girsItem . ix kLogGroup . D.avS . _Just . to LogGroup <*> res ^? D.girsItem . ix kLogStream . D.avS . _Just . to LogStream)
     <*> (Right . fmap (bool BuildNotCancelled BuildCancelled) $ res ^? D.girsItem . ix kCancelled . D.avBOOL . _Just)
 
 blat :: Text -> Maybe UTCTime

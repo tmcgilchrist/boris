@@ -152,14 +152,21 @@ byProject store project =
 logOf :: Store -> LogService -> BuildId -> EitherT Store.FetchError IO (Maybe (Source IO ByteString))
 logOf store logs i = do
   d <- Store.fetch store i
-  case d >>= buildDataLog of
+  case d of
     Nothing ->
       pure Nothing
     Just ld -> do
       case logs of
-        CloudWatchLogs env ->
-          pure . Just $ source env ld =$= Conduit.map (\t ->
-            Text.encodeUtf8 $ t <> "\n")
+        CloudWatchLogs env environ ->
+          let
+            gname = mconcat [ "boris.", renderEnvironment environ ]
+            sname = mconcat [ renderProject $ buildDataProject ld, ".", renderBuildId $ buildDataId ld ]
+          in
+            pure . Just $ source env (CloudwatchLogData gname sname) =$= Conduit.map (\t ->
+              Text.encodeUtf8 $ t <> "\n")
+        DBLogs ->
+          l <- Store.fetchLogData store i
+          pure . Just $ Conduit.sourceList l =$= Conduit.map (\t -> Text.encodeUtf8 $ renderDBLogData t <> "\n")
         DevNull ->
           pure Nothing
 
@@ -176,7 +183,7 @@ complete store i result = do
   Store.complete store i result
 
 source :: Env -> LogData -> Source IO Text
-source env (LogData gname sname) =
-  Jebediah.source env gname sname Everything NoFollow
+source env (CloudwatchLog c) =
+  Jebediah.source env (logDataGroup c) (logDataStream c) Everything NoFollow
     =$= Jebediah.unclean
     =$= Conduit.map logChunk

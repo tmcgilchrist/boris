@@ -68,11 +68,11 @@ fetch i = do
   x <- Traction.unique [sql|
       SELECT project, build, ref, commit, queued_time,
              start_time, end_time, heartbeat_time, build_result,
-             cancelled, log_group, log_stream
+             cancelled
         FROM build
        WHERE build_id = ?::integer
     |] (Traction.Only $ renderBuildId i)
-  pure . with x $ \((p, b, r, c, qt, st, et, ht, br) :. (cancelled, group, stream)) ->
+  pure . with x $ \((p, b, r, c, qt, st, et, ht) :. (br, cancelled)) ->
     BuildData
       i
       (Project p)
@@ -84,8 +84,19 @@ fetch i = do
       et
       ht
       (bool BuildKo BuildOk <$> br)
-      (LogData <$> (LogGroup <$> group) <*> (LogStream <$> stream))
       (bool BuildNotCancelled BuildCancelled <$> cancelled)
+
+fetchLogs :: MonadDb m => BuildId -> m (Maybe [DBLogData])
+fetchLogs i = do
+  x <- Traction.query [sql|
+      SELECT logged_at, log_payload
+        FROM log
+       WHERE build_id = ?::integer
+    |] (Traction.Only $ renderBuildId i)
+  pure . with x $ \(tm, tt) ->
+    DBLogData
+      tm
+      tt
 
 getProjects :: MonadDb m => Project -> m [Build]
 getProjects project =
