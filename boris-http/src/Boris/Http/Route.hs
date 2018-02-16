@@ -138,7 +138,7 @@ route store buildx logx projectx mode = do
                 Just ii -> do
                   Spock.setStatus HTTP.created201
                   Spock.setHeader "Location" $ "/build/" <> renderBuildId ii
-                  Spock.json $ ApiV1.GetBuild (BuildData ii project build ref Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing)
+                  Spock.json $ ApiV1.GetBuild (BuildData ii project build ref Nothing Nothing Nothing Nothing Nothing Nothing Nothing)
 
 
   Spock.get ("project" <//> Spock.var <//> "commit" <//> Spock.var) $ \project' commit' -> do

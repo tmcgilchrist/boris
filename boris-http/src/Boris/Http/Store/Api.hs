@@ -203,7 +203,7 @@ fetch store build =
         ((n, builds, discovers), head . filter ((==) build . buildDataId) $ builds)
 
 fetchLogData :: Store -> BuildId -> EitherT FetchError IO (Maybe LogData)
-fetchLogData store logs i = undefined
+fetchLogData _store _i = undefined
   -- fetch [DBLogData] from the db
   -- for dynamo and memory - return nothing
 

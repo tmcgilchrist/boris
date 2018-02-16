@@ -5,6 +5,7 @@
 module Boris.Http.Store.Postgres.Query (
     tick
   , fetch
+  , fetchLogs
   , cancel
   , register
   , acknowledge
@@ -86,7 +87,7 @@ fetch i = do
       (bool BuildKo BuildOk <$> br)
       (bool BuildNotCancelled BuildCancelled <$> cancelled)
 
-fetchLogs :: MonadDb m => BuildId -> m (Maybe [DBLogData])
+fetchLogs :: MonadDb m => BuildId -> m [DBLogData]
 fetchLogs i = do
   x <- Traction.query [sql|
       SELECT logged_at, log_payload

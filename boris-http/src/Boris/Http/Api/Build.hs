@@ -39,7 +39,7 @@ import           Boris.Queue (Request (..), RequestBuild (..))
 import           Data.Conduit (Source, (=$=))
 import qualified Data.Conduit.List as Conduit
 
-import           Jebediah.Data (Query (..), Following (..), Log (..))
+import           Jebediah.Data (Query (..), Following (..), Log (..), LogGroup (..), LogStream (..))
 import qualified Jebediah.Conduit as Jebediah
 
 -- FIX MTH this shouldn't be needed once logging gets sorted
@@ -157,16 +157,21 @@ logOf store logs i = do
       pure Nothing
     Just ld -> do
       case logs of
-        CloudWatchLogs env environ ->
+        CloudWatchLogs env environ -> do
           let
-            gname = mconcat [ "boris.", renderEnvironment environ ]
-            sname = mconcat [ renderProject $ buildDataProject ld, ".", renderBuildId $ buildDataId ld ]
-          in
-            pure . Just $ source env (CloudwatchLogData gname sname) =$= Conduit.map (\t ->
-              Text.encodeUtf8 $ t <> "\n")
-        DBLogs ->
-          l <- Store.fetchLogData store i
-          pure . Just $ Conduit.sourceList l =$= Conduit.map (\t -> Text.encodeUtf8 $ renderDBLogData t <> "\n")
+            gname = LogGroup $ mconcat [ "boris.", renderEnvironment environ ]
+            sname = LogStream $ mconcat [ renderProject $ buildDataProject ld, ".", renderBuildId $ buildDataId ld ]
+          pure . Just $ source env (CloudwatchLogData gname sname) =$= Conduit.map (\t ->
+            Text.encodeUtf8 $ t <> "\n")
+        DBLogs -> do
+          l' <- Store.fetchLogData store i
+          case l' of
+            Just (DBLog l) ->
+              pure . Just $ Conduit.sourceList l =$= Conduit.map (\t -> Text.encodeUtf8 $ renderDBLogData t <> "\n")
+            Just (CloudwatchLog _) ->
+              pure Nothing
+            Nothing ->
+              pure Nothing
         DevNull ->
           pure Nothing
 
@@ -182,8 +187,10 @@ complete :: Store -> BuildId -> BuildResult -> EitherT Store.StoreError IO ()
 complete store i result = do
   Store.complete store i result
 
-source :: Env -> LogData -> Source IO Text
-source env (CloudwatchLog c) =
+source :: Env -> CloudwatchLogData -> Source IO Text
+source env c =
   Jebediah.source env (logDataGroup c) (logDataStream c) Everything NoFollow
     =$= Jebediah.unclean
     =$= Conduit.map logChunk
+
+

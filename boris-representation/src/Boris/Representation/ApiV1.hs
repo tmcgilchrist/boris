@@ -26,8 +26,6 @@ import           Boris.Core.Data
 
 import           Data.Aeson (FromJSON (..), ToJSON (..), object, (.=), (.:), (.:?), withObject, Value)
 
-import           Jebediah.Data (LogGroup (..), LogStream (..))
-
 import           P
 
 
