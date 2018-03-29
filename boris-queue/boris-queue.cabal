@@ -19,7 +19,7 @@ library
                     , ambiata-mismi-sqs
                     , ambiata-p
                     , ambiata-x-aeson
-                    , ambiata-x-eithert
+                    , transformers-either
                     , lens                            >= 4.6        && < 4.16
                     , text                            == 1.2.*
                     , transformers                    >= 0.4        && < 0.6
@@ -83,7 +83,7 @@ test-suite test-io
                     , ambiata-mismi-sqs
                     , ambiata-mismi-sqs-test
                     , ambiata-p
-                    , ambiata-x-eithert
                     , text
+                    , transformers-either
                     , QuickCheck                      >= 2.7        && < 2.10
                     , quickcheck-instances            == 0.3.*

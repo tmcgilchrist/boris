@@ -18,6 +18,7 @@ module Boris.Queue (
 
 import           Control.Lens (ix, to, (.~), (^.), (^?))
 import           Control.Monad.Trans.Class (lift)
+import           Control.Monad.Trans.Either (EitherT, left, hoistEither)
 
 import           Boris.Core.Data
 
@@ -32,10 +33,7 @@ import qualified Mismi.SQS.Amazonka as A
 
 import           P
 
-
-import           X.Control.Monad.Trans.Either (EitherT, hoistEither, left)
-import           X.Data.Aeson (asTextWith, asWith)
-
+import           X.Data.Aeson (asWith, asTextWith)
 
 data QueueError =
     QueueMissingBodyError

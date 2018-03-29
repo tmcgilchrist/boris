@@ -13,14 +13,13 @@ import           Boris.Service.Boot
 import           Boris.Service.Build
 import           Boris.Service.Discover
 
-import           Mismi (Error, renderError, runAWST)
+import           Control.Monad.Trans.Either (EitherT, bimapEitherT)
+
 import           Mismi.Amazonka (Env)
 
 import           P
 
 import           System.IO (IO)
-
-import           X.Control.Monad.Trans.Either (EitherT, bimapEitherT)
 
 data ListenerError =
     ListenerQueueError Q.QueueError

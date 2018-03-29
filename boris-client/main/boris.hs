@@ -12,7 +12,11 @@ import qualified Boris.Client.Log as L
 import qualified Boris.Client.Validate as V
 
 import           Control.Concurrent (threadDelay)
+import           Control.Concurrent.Async (async, waitEitherCancel)
 import           Control.Monad.IO.Class (liftIO)
+import           Control.Monad.Trans.Either (newEitherT, runEitherT)
+import           Control.Monad.Trans.Either.Exit (orDie)
+
 
 import           Data.Default (def)
 import           Data.String (String)
@@ -36,7 +40,6 @@ import           System.Environment (lookupEnv)
 import           System.IO
 
 import           X.Options.Applicative
-import           X.Control.Monad.Trans.Either.Exit (orDie)
 
 data Cli =
       RemoteCommand RemoteCommand

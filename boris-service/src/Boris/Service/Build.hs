@@ -26,8 +26,6 @@ import qualified Tine.Conduit as X
 
 import           Twine.Snooze (seconds, snooze)
 
-import           X.Control.Monad.Trans.Either (EitherT, joinEitherE, newEitherT, runEitherT)
-
 data BuilderError =
     BuildLogError LogError
   | BuildRemoteError Remote.RemoteError

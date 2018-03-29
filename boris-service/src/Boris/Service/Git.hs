@@ -14,6 +14,7 @@ import           Boris.Core.Serial.Ref
 import qualified Boris.Git as Git
 
 import           Control.Monad.IO.Class (liftIO)
+import           Control.Monad.Trans.Either (EitherT, runEitherT, bimapEitherT, hoistEither)
 
 import qualified Data.Text as T
 
@@ -23,9 +24,6 @@ import           System.Exit (ExitCode (..))
 import           System.IO (IO)
 
 import           Tine.Conduit (Out)
-
-import           X.Control.Monad.Trans.Either (EitherT, bimapEitherT, hoistEither, runEitherT)
-
 
 data InitialiseError =
     MirrorError ExitCode

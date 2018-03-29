@@ -10,6 +10,7 @@ module Boris.Client.Http (
   , delete
   ) where
 
+import           Control.Monad.Trans.Either (EitherT, newEitherT, bimapEitherT, hoistEither, left)
 
 import           Data.Aeson (FromJSON (..), ToJSON (..), encode)
 import           Data.ByteString (ByteString)
@@ -28,8 +29,6 @@ import           Snooze.Json (decodeResponse)
 import           Snooze.Url (encodePathSegmentsBS)
 
 import           System.IO (IO)
-
-import           X.Control.Monad.Trans.Either (EitherT, bimapEitherT, hoistEither, left, newEitherT)
 
 data BorisHttpClientError =
     BorisHttpClientBalanceError BalanceError

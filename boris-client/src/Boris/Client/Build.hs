@@ -19,6 +19,8 @@ import qualified Boris.Client.Http as H
 import           Boris.Core.Data
 import           Boris.Representation.ApiV1
 
+import           Control.Monad.Trans.Either (EitherT)
+
 import           Data.Aeson (object, (.=))
 
 import           P
@@ -26,8 +28,6 @@ import           P
 import           Snooze.Balance.Control (BalanceConfig)
 
 import           System.IO (IO)
-
-import           X.Control.Monad.Trans.Either (EitherT)
 
 trigger :: BalanceConfig -> Project -> Build -> Maybe Ref -> EitherT BorisHttpClientError IO BuildData
 trigger c p b r =

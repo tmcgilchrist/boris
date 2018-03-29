@@ -8,6 +8,7 @@ import           Boris.Core.Data
 import           Boris.Service.Workspace
 
 import           Control.Monad.IO.Class (liftIO)
+import           Control.Monad.Trans.Either (runEitherT)
 
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
@@ -24,8 +25,6 @@ import           System.IO.Temp (withSystemTempDirectory)
 import           Test.Boris.Core.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
-
-import           X.Control.Monad.Trans.Either (runEitherT)
 
 prop_withWorkspace i d =
   testIO . withSystemTempDirectory "workspace" $ \t -> do

@@ -7,6 +7,8 @@ module Test.IO.Boris.Git where
 import           Boris.Core.Data
 import qualified Boris.Git as Git
 
+import           Control.Monad.Trans.Either (EitherT, runEitherT)
+
 import qualified Data.Conduit.Binary as CB
 import qualified Data.Conduit.List as CL
 import qualified Data.List as L
@@ -28,8 +30,6 @@ import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 
 import qualified Tine.Conduit as X
-
-import           X.Control.Monad.Trans.Either (EitherT, runEitherT)
 
 prop_bare_clone_basic datas =
   testIO . withSystemTempDirectory "git" $ \t -> do

@@ -15,13 +15,14 @@ import           Boris.Service.Git
 import           Boris.Service.Log
 import           Boris.Service.Workspace
 
+import           Control.Monad.Trans.Either (EitherT, runEitherT, newEitherT, bimapEitherT)
+
 import           P
 
 import           System.IO (IO)
 
 import qualified Tine.Conduit as X
 
-import           X.Control.Monad.Trans.Either (EitherT, bimapEitherT, joinEitherE, newEitherT, runEitherT)
 
 data DiscoverError =
     DiscoverInitialiseError InitialiseError

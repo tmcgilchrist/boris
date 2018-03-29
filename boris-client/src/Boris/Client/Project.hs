@@ -11,13 +11,13 @@ import qualified Boris.Client.Http as H
 import           Boris.Core.Data
 import           Boris.Representation.ApiV1
 
+import           Control.Monad.Trans.Either (EitherT)
+
 import           P
 
 import           Snooze.Balance.Control (BalanceConfig)
 
 import           System.IO (IO)
-
-import           X.Control.Monad.Trans.Either (EitherT)
 
 list :: BalanceConfig -> EitherT BorisHttpClientError IO [Project]
 list c =

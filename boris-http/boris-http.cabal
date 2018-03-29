@@ -28,7 +28,6 @@ library
                     , ambiata-snooze
                     , ambiata-spine
                     , ambiata-x-aeson
-                    , ambiata-x-eithert
                     , async                           >= 2.0        && < 2.2
                     , base16-bytestring               == 0.1.*
                     , blaze-html                      == 0.8.*
@@ -56,6 +55,7 @@ library
                     , time-locale-compat              == 0.1.*
                     , traction                        == 0.*
                     , transformers                    >= 0.4        && < 0.6
+                    , transformers-either                    
                     , tz                              == 0.1.1.*
                     , unordered-containers            == 0.2.*
                     , vulcan                          == 0.*
@@ -114,11 +114,11 @@ executable boris-http
                     , ambiata-mismi-s3
                     , ambiata-p
                     , ambiata-twine
-                    , ambiata-x-eithert
                     , nest
                     , Spock-core
                     , text
                     , transformers
+                    , transformers-either
                     , warp
 
 test-suite test

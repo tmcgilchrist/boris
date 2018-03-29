@@ -13,6 +13,7 @@ module Boris.Git (
 import           Boris.Core.Data
 
 import           Control.Monad.IO.Class (liftIO)
+import           Control.Monad.Trans.Either (EitherT)
 
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
@@ -25,9 +26,6 @@ import           System.IO (FilePath, IO)
 
 import           Tine.Conduit (Out)
 import qualified Tine.Conduit as X
-
-import           X.Control.Monad.Trans.Either (EitherT)
-
 
 bare :: Out -> Out -> Repository -> FilePath -> EitherT ExitCode IO LocalRepository
 bare sout serr r target = do

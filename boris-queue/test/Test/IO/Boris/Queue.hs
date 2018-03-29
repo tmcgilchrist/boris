@@ -6,6 +6,9 @@ module Test.IO.Boris.Queue where
 
 import           Boris.Core.Data
 import           Boris.Queue (BuildQueue (..))
+
+import           Control.Monad.Trans.Either (runEitherT)
+
 import qualified Boris.Queue as Q
 
 import           Disorder.Core (failWith)
@@ -20,8 +23,6 @@ import           Test.Mismi (testAWS)
 import           Test.Mismi.Arbitrary ()
 import           Test.Mismi.SQS (withQueue)
 import           Test.QuickCheck
-
-import           X.Control.Monad.Trans.Either (runEitherT)
 
 prop_queue qn r =
   testAWS . withQueue qn $ \_ ->  do

@@ -8,6 +8,8 @@ import           Boris.Client.Http (BorisHttpClientError (..))
 import qualified Boris.Client.Http as H
 import           Boris.Core.Data
 
+import           Control.Monad.Trans.Either (EitherT)
+
 import           Data.Aeson (FromJSON (..), withObject, (.:), (.:?))
 import           Data.Aeson.Types (Parser, Value)
 import qualified Data.Text as T
@@ -17,8 +19,6 @@ import           P
 import           Snooze.Balance.Control (BalanceConfig)
 
 import           System.IO (IO)
-
-import           X.Control.Monad.Trans.Either (EitherT)
 
 scoreboard :: BalanceConfig -> EitherT BorisHttpClientError IO [Result]
 scoreboard c =

@@ -8,6 +8,8 @@ import           Boris.Core.Data
 import qualified Boris.Service.Git as Git
 import           Boris.Service.Workspace
 
+import           Control.Monad.Trans.Either (runEitherT)
+
 import qualified Data.Conduit.Binary as CB
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
@@ -30,8 +32,6 @@ import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 
 import qualified Tine.Conduit as X
-
-import           X.Control.Monad.Trans.Either (runEitherT)
 
 prop_initialise i =
   testIO . withSystemTempDirectory "workspace" $ \t -> do

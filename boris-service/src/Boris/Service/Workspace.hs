@@ -9,13 +9,12 @@ module Boris.Service.Workspace (
 import           Boris.Core.Data
 
 import           Control.Monad.IO.Class (liftIO)
+import           Control.Monad.Trans.Either (EitherT, bracketEitherT')
 
 import           P
 
 import           System.Directory (createDirectoryIfMissing, removeDirectoryRecursive)
 import           System.IO (IO)
-
-import           X.Control.Monad.Trans.Either (EitherT, bracketEitherT')
 
 newWorkspace :: WorkspacePath -> BuildId -> IO Workspace
 newWorkspace work build =

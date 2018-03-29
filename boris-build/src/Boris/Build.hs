@@ -9,6 +9,7 @@ module Boris.Build (
 import           Boris.Core.Data
 
 import           Control.Monad.IO.Class (liftIO)
+import           Control.Monad.Trans.Either (EitherT, bimapEitherT, runEitherT, hoistEither)
 
 import qualified Data.Text as T
 
@@ -19,8 +20,6 @@ import qualified Tine.Conduit as X
 
 import           System.Exit (ExitCode (..))
 import           System.IO (IO)
-
-import           X.Control.Monad.Trans.Either (EitherT, bimapEitherT, hoistEither, runEitherT)
 
 data BuildError =
     RunError ExitCode
